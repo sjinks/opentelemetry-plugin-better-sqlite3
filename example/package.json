@@ -1,0 +1,32 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "Example",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Volodymyr Kolesnykov <volodymyr@wildwolf.name> (https://wildwolf.name/)",
+  "license": "MIT",
+  "dependencies": {
+    "@opentelemetry/api": "^0.11.0",
+    "@opentelemetry/context-async-hooks": "^0.11.0",
+    "@opentelemetry/core": "^0.11.0",
+    "@opentelemetry/exporter-zipkin": "^0.11.0",
+    "@opentelemetry/node": "^0.11.0",
+    "@opentelemetry/plugin-https": "^0.11.0",
+    "@opentelemetry/tracing": "^0.11.0",
+    "better-sqlite3": "^7.1.1",
+    "node-fetch": "^2.6.1",
+    "opentelemetry-plugin-better-sqlite3": "0.0.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^5.4.0",
+    "@types/node": "^14.11.8",
+    "@types/node-fetch": "^2.5.7",
+    "@typescript-eslint/parser": "^4.4.1",
+    "ts-node": "9.0.0",
+    "typescript": "^4.0.3"
+  }
+}
