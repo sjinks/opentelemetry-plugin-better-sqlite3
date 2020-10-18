@@ -1,0 +1,72 @@
+{
+  "name": "opentelemetry-plugin-better-sqlite3",
+  "version": "0.0.1",
+  "description": "OpenTelemetry better-sqlite3 automatic instrumentation package",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint .",
+    "pretest": "npm run lint && npm run build",
+    "test": "jest",
+    "prepare": "npm run build"
+  },
+  "author": "Volodymyr Kolesnykov <volodymyr@wildwolf.name> (https://wildwolf.name/)",
+  "license": "MIT",
+  "files": [
+    "dist/lib/*.js",
+    "dist/lib/*.d.ts"
+  ],
+  "typings": "dist/lib/index.d.ts",
+  "devDependencies": {
+    "@opentelemetry/context-async-hooks": "^0.11.0",
+    "@opentelemetry/node": "^0.11.0",
+    "@opentelemetry/tracing": "^0.11.0",
+    "@types/better-sqlite3": "^5.4.0",
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.8",
+    "@types/shimmer": "^1.0.1",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
+    "better-sqlite3": "^7.1.1",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^6.13.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.5.3",
+    "merge": "^1.2.1",
+    "prettier": "^2.1.2",
+    "ts-jest": "^26.4.1",
+    "ts-node": "9.0.0",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "^0.11.0",
+    "@opentelemetry/core": "^0.11.0",
+    "@opentelemetry/semantic-conventions": "^0.11.0",
+    "shimmer": "^1.2.1"
+  },
+  "peerDependencies": {
+    "better-sqlite3": "^7.1.1"
+  },
+  "main": "dist/lib/index.js",
+  "keywords": [
+    "opentelemetry-plugin",
+    "opentelemetry",
+    "sqlite",
+    "sqlite3",
+    "better-sqlite3",
+    "instrumentation"
+  ],
+  "directories": {
+    "example": "example",
+    "lib": "lib",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sjinks/opentelemetry-plugin-better-sqlite3.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sjinks/opentelemetry-plugin-better-sqlite3/issues"
+  },
+  "homepage": "https://github.com/sjinks/opentelemetry-plugin-better-sqlite3#readme"
+}
