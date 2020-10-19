@@ -19,5 +19,5 @@
       ]
   },
   "compileOnSave": true,
-  "exclude": ["./example/**"]
+  "exclude": ["./example/**", "./dist/**"]
 }
