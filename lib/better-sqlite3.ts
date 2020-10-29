@@ -5,7 +5,7 @@ import { DatabaseAttribute } from '@opentelemetry/semantic-conventions';
 import type bs3Types from 'better-sqlite3';
 import shimmer from 'shimmer';
 
-export class BetterSqlite3Plugin extends BasePlugin<ObjectConstructor> {
+export class BetterSqlite3Plugin extends BasePlugin<typeof bs3Types> {
     public readonly supportedVersions = ['^7.0.0'];
     public static readonly COMPONENT = 'better-sqlite3';
 
@@ -15,11 +15,11 @@ export class BetterSqlite3Plugin extends BasePlugin<ObjectConstructor> {
         super('opentelemetry-plugin-better-sqlite3');
     }
 
-    protected patch(): ObjectConstructor {
+    protected patch(): typeof bs3Types {
         if (!this.enabled) {
             this.enabled = true;
 
-            const proto = this._moduleExports.prototype as bs3Types.Database;
+            const proto = this._moduleExports.prototype;
             shimmer.wrap(proto, 'exec', this.patchExec);
             shimmer.wrap(
                 proto,
@@ -35,7 +35,7 @@ export class BetterSqlite3Plugin extends BasePlugin<ObjectConstructor> {
         if (this.enabled) {
             this.enabled = false;
 
-            const proto = this._moduleExports.prototype as bs3Types.Database;
+            const proto = this._moduleExports.prototype;
             shimmer.massUnwrap([proto], ['exec', 'prepare']);
         }
     }
