@@ -1,4 +1,4 @@
-import { CanonicalCode, context } from '@opentelemetry/api';
+import { StatusCode, context } from '@opentelemetry/api';
 import { NoopLogger } from '@opentelemetry/core';
 import { NodeTracerProvider } from '@opentelemetry/node';
 import { AsyncHooksContextManager } from '@opentelemetry/context-async-hooks';
@@ -10,7 +10,7 @@ import { BetterSqlite3Plugin, plugin } from '../lib';
 function checkSpanAttributes(
     spans: Readonly<ReadableSpan>,
     name: string,
-    code: CanonicalCode,
+    code: StatusCode,
     stmt: string,
     err?: Error,
 ): void {
@@ -80,7 +80,7 @@ describe('BetterSqlite3Plugin', () => {
 
                 const spans = memoryExporter.getFinishedSpans();
                 expect(spans).toHaveLength(1);
-                checkSpanAttributes(spans[0], 'SELECT', CanonicalCode.OK, sql);
+                checkSpanAttributes(spans[0], 'SELECT', StatusCode.OK, sql);
             });
         });
 
@@ -94,7 +94,7 @@ describe('BetterSqlite3Plugin', () => {
                 } catch (e) {
                     const spans = memoryExporter.getFinishedSpans();
                     expect(spans).toHaveLength(1);
-                    checkSpanAttributes(spans[0], 'SLCT', CanonicalCode.UNKNOWN, sql, e);
+                    checkSpanAttributes(spans[0], 'SLCT', StatusCode.ERROR, sql, e);
                 }
             });
         });
@@ -109,7 +109,7 @@ describe('BetterSqlite3Plugin', () => {
                 } catch (e) {
                     const spans = memoryExporter.getFinishedSpans();
                     expect(spans).toHaveLength(1);
-                    checkSpanAttributes(spans[0], 'prepare: UNKNOWN', CanonicalCode.UNKNOWN, sql, e);
+                    checkSpanAttributes(spans[0], 'prepare: UNKNOWN', StatusCode.ERROR, sql, e);
                 }
             });
         });
@@ -121,8 +121,8 @@ describe('BetterSqlite3Plugin', () => {
                 connection.pragma('journal_mode');
                 const spans = memoryExporter.getFinishedSpans();
                 expect(spans).toHaveLength(2);
-                checkSpanAttributes(spans[0], 'prepare: PRAGMA', CanonicalCode.OK, sql);
-                checkSpanAttributes(spans[1], 'all: PRAGMA', CanonicalCode.OK, sql);
+                checkSpanAttributes(spans[0], 'prepare: PRAGMA', StatusCode.OK, sql);
+                checkSpanAttributes(spans[1], 'all: PRAGMA', StatusCode.OK, sql);
             });
         });
     });
@@ -137,8 +137,8 @@ describe('BetterSqlite3Plugin', () => {
 
                 const spans = memoryExporter.getFinishedSpans();
                 expect(spans).toHaveLength(2);
-                checkSpanAttributes(spans[0], 'prepare: SELECT', CanonicalCode.OK, sql);
-                checkSpanAttributes(spans[1], `${method}: SELECT`, CanonicalCode.OK, sql);
+                checkSpanAttributes(spans[0], 'prepare: SELECT', StatusCode.OK, sql);
+                checkSpanAttributes(spans[1], `${method}: SELECT`, StatusCode.OK, sql);
             });
         });
 
@@ -151,8 +151,8 @@ describe('BetterSqlite3Plugin', () => {
 
                 const spans = memoryExporter.getFinishedSpans();
                 expect(spans).toHaveLength(2);
-                checkSpanAttributes(spans[0], 'prepare: ANALYZE', CanonicalCode.OK, sql);
-                checkSpanAttributes(spans[1], 'run: ANALYZE', CanonicalCode.OK, sql);
+                checkSpanAttributes(spans[0], 'prepare: ANALYZE', StatusCode.OK, sql);
+                checkSpanAttributes(spans[1], 'run: ANALYZE', StatusCode.OK, sql);
             });
         });
 
@@ -167,7 +167,7 @@ describe('BetterSqlite3Plugin', () => {
 
                 const spans = memoryExporter.getFinishedSpans();
                 expect(spans).toHaveLength(1);
-                checkSpanAttributes(spans[0], 'prepare: ANALYZE', CanonicalCode.OK, sql);
+                checkSpanAttributes(spans[0], 'prepare: ANALYZE', StatusCode.OK, sql);
             });
         });
     });

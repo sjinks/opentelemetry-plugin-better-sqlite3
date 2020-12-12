@@ -1,5 +1,5 @@
 /* eslint-disable no-invalid-this */
-import { CanonicalCode, Span, SpanKind } from '@opentelemetry/api';
+import { Span, SpanKind, StatusCode } from '@opentelemetry/api';
 import { BasePlugin } from '@opentelemetry/core';
 import { DatabaseAttribute } from '@opentelemetry/semantic-conventions';
 import type bs3Types from 'better-sqlite3';
@@ -62,10 +62,10 @@ export class BetterSqlite3Plugin extends BasePlugin<typeof bs3Types> {
     ): unknown {
         try {
             const result = original.apply(this_, params);
-            span.setStatus({ code: CanonicalCode.OK });
+            span.setStatus({ code: StatusCode.OK });
             return result;
         } catch (e) {
-            span.setStatus({ code: CanonicalCode.UNKNOWN, message: (e as Error).message });
+            span.setStatus({ code: StatusCode.ERROR, message: (e as Error).message });
             throw e;
         } finally {
             span.end();
@@ -89,13 +89,13 @@ export class BetterSqlite3Plugin extends BasePlugin<typeof bs3Types> {
             return self._tracer.withSpan(span, () => {
                 try {
                     const result = original.apply(this, params);
-                    span.setStatus({ code: CanonicalCode.OK });
+                    span.setStatus({ code: StatusCode.OK });
 
                     shimmer.massWrap([result], ['run', 'get', 'all'], self.patchStatement);
 
                     return result;
                 } catch (e) {
-                    span.setStatus({ code: CanonicalCode.UNKNOWN, message: (e as Error).message });
+                    span.setStatus({ code: StatusCode.ERROR, message: (e as Error).message });
                     throw e;
                 } finally {
                     span.end();
