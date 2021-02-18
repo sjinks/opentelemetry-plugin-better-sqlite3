@@ -19,7 +19,7 @@
   "devDependencies": {
     "@opentelemetry/context-async-hooks": "^0.14.0",
     "@opentelemetry/node": "^0.14.0",
-    "@opentelemetry/tracing": "^0.14.0",
+    "@opentelemetry/tracing": "^0.17.0",
     "@types/better-sqlite3": "^5.4.1",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.21",
