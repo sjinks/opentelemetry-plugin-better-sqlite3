@@ -1,5 +1,5 @@
 /* eslint-disable no-invalid-this */
-import { Span, SpanKind, StatusCode } from '@opentelemetry/api';
+import { Span, SpanKind, SpanStatusCode, context, setSpan } from '@opentelemetry/api';
 import { BasePlugin } from '@opentelemetry/core';
 import { DatabaseAttribute } from '@opentelemetry/semantic-conventions';
 import type bs3Types from 'better-sqlite3';
@@ -62,10 +62,10 @@ export class BetterSqlite3Plugin extends BasePlugin<typeof bs3Types> {
     ): unknown {
         try {
             const result = original.apply(this_, params);
-            span.setStatus({ code: StatusCode.OK });
+            span.setStatus({ code: SpanStatusCode.OK });
             return result;
         } catch (e) {
-            span.setStatus({ code: StatusCode.ERROR, message: (e as Error).message });
+            span.setStatus({ code: SpanStatusCode.ERROR, message: (e as Error).message });
             throw e;
         } finally {
             span.end();
@@ -76,7 +76,7 @@ export class BetterSqlite3Plugin extends BasePlugin<typeof bs3Types> {
         const self = this;
         return function exec(this: bs3Types.Database, ...params): ReturnType<typeof original> {
             const span = self.createSpan(params[0], this);
-            return self._tracer.withSpan(span, () =>
+            return context.with(setSpan(context.active(), span), () =>
                 BetterSqlite3Plugin.defaultRunner(span, original, this, params),
             ) as ReturnType<typeof original>;
         };
@@ -86,16 +86,16 @@ export class BetterSqlite3Plugin extends BasePlugin<typeof bs3Types> {
         const self = this;
         return function prepare(this: bs3Types.Database, ...params): ReturnType<typeof original> {
             const span = self.createSpan(params[0], this, 'prepare');
-            return self._tracer.withSpan(span, () => {
+            return context.with(setSpan(context.active(), span), () => {
                 try {
                     const result = original.apply(this, params);
-                    span.setStatus({ code: StatusCode.OK });
+                    span.setStatus({ code: SpanStatusCode.OK });
 
                     shimmer.massWrap([result], ['run', 'get', 'all'], self.patchStatement);
 
                     return result;
                 } catch (e) {
-                    span.setStatus({ code: StatusCode.ERROR, message: (e as Error).message });
+                    span.setStatus({ code: SpanStatusCode.ERROR, message: (e as Error).message });
                     throw e;
                 } finally {
                     span.end();
@@ -113,7 +113,9 @@ export class BetterSqlite3Plugin extends BasePlugin<typeof bs3Types> {
             }
 
             const span = self.createSpan(this.source, this.database, original.name);
-            return self._tracer.withSpan(span, () => BetterSqlite3Plugin.defaultRunner(span, original, this, params));
+            return context.with(setSpan(context.active(), span), () =>
+                BetterSqlite3Plugin.defaultRunner(span, original, this, params),
+            );
         };
     };
 }
