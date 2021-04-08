@@ -26,6 +26,8 @@ export class BetterSqlite3Plugin extends BasePlugin<typeof bs3Types> {
                 'prepare',
                 this.patchPrepare as (original: typeof proto['prepare']) => typeof proto['prepare'],
             );
+
+            shimmer.wrap(proto, 'pragma', this.patchPragma);
         }
 
         return this._moduleExports;
@@ -36,7 +38,7 @@ export class BetterSqlite3Plugin extends BasePlugin<typeof bs3Types> {
             this.enabled = false;
 
             const proto = this._moduleExports.prototype;
-            shimmer.massUnwrap([proto], ['exec', 'prepare']);
+            shimmer.massUnwrap([proto], ['exec', 'prepare', 'pragma']);
         }
     }
 
@@ -101,6 +103,18 @@ export class BetterSqlite3Plugin extends BasePlugin<typeof bs3Types> {
                     span.end();
                 }
             });
+        };
+    };
+
+    private readonly patchPragma = (
+        original: (source: string, options?: bs3Types.PragmaOptions) => unknown,
+    ): typeof original => {
+        const self = this;
+        return function pragma(this: bs3Types.Database, ...params): ReturnType<typeof original> {
+            const span = self.createSpan(`PRAGMA ${params[0]}`, this);
+            return context.with(setSpan(context.active(), span), () =>
+                BetterSqlite3Plugin.defaultRunner(span, original, this, params),
+            );
         };
     };
 
