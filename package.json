@@ -17,7 +17,7 @@
   ],
   "typings": "dist/lib/index.d.ts",
   "devDependencies": {
-    "@opentelemetry/context-async-hooks": "^0.18.0",
+    "@opentelemetry/context-async-hooks": "^0.19.0",
     "@opentelemetry/node": "^0.18.0",
     "@opentelemetry/tracing": "^0.18.0",
     "@types/better-sqlite3": "^5.4.1",
