@@ -21,8 +21,8 @@
   ],
   "typings": "dist/lib/index.d.ts",
   "devDependencies": {
-    "@opentelemetry/context-async-hooks": "^0.23.0",
-    "@opentelemetry/tracing": "^0.23.0",
+    "@opentelemetry/context-async-hooks": "^0.24.0",
+    "@opentelemetry/tracing": "^0.24.0",
     "@types/better-sqlite3": "^5.4.1",
     "@types/chai": "^4.2.21",
     "@types/mocha": "^9.0.0",
@@ -48,9 +48,9 @@
   },
   "dependencies": {
     "@opentelemetry/api": "^1.0.1",
-    "@opentelemetry/core": "^0.23.0",
-    "@opentelemetry/instrumentation": "^0.23.0",
-    "@opentelemetry/semantic-conventions": "^0.23.0"
+    "@opentelemetry/core": "^0.24.0",
+    "@opentelemetry/instrumentation": "^0.24.0",
+    "@opentelemetry/semantic-conventions": "^0.24.0"
   },
   "peerDependencies": {
     "better-sqlite3": "^7.1.1"
