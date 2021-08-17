@@ -23,7 +23,7 @@
   "devDependencies": {
     "@opentelemetry/context-async-hooks": "^0.24.0",
     "@opentelemetry/tracing": "^0.24.0",
-    "@types/better-sqlite3": "^5.4.1",
+    "@types/better-sqlite3": "^7.4.0",
     "@types/chai": "^4.2.21",
     "@types/mocha": "^9.0.0",
     "@types/mocha-each": "^2.0.0",
