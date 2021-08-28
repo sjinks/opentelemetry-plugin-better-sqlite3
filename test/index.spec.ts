@@ -95,7 +95,7 @@ describe('BetterSqlite3Plugin', () => {
                 } catch (e) {
                     const spans = memoryExporter.getFinishedSpans();
                     expect(spans).to.be.an('array').and.have.length(1);
-                    checkSpanAttributes(spans[0], 'SLCT', SpanStatusCode.ERROR, sql, e);
+                    checkSpanAttributes(spans[0], 'SLCT', SpanStatusCode.ERROR, sql, e as Error);
                 }
             });
         });
@@ -110,7 +110,7 @@ describe('BetterSqlite3Plugin', () => {
                 } catch (e) {
                     const spans = memoryExporter.getFinishedSpans();
                     expect(spans).to.be.an('array').and.have.length(1);
-                    checkSpanAttributes(spans[0], 'prepare: UNKNOWN', SpanStatusCode.ERROR, sql, e);
+                    checkSpanAttributes(spans[0], 'prepare: UNKNOWN', SpanStatusCode.ERROR, sql, e as Error);
                 }
             });
         });
