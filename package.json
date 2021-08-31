@@ -36,7 +36,7 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-formatter-gha": "^1.2.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "merge": "^2.1.0",
     "mocha": "^9.0.2",
     "mocha-each": "^2.0.1",
