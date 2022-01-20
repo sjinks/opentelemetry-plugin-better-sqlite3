@@ -16,7 +16,7 @@
     "@opentelemetry/exporter-zipkin": "^0.11.0",
     "@opentelemetry/node": "^0.11.0",
     "@opentelemetry/plugin-https": "^0.11.0",
-    "@opentelemetry/tracing": "^0.11.0",
+    "@opentelemetry/tracing": "^0.24.0",
     "better-sqlite3": "^7.1.1",
     "node-fetch": "^2.6.1",
     "opentelemetry-plugin-better-sqlite3": "0.0.1"
