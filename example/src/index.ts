@@ -1,14 +1,13 @@
 // This must be the very first import
 import './instrumentation';
 
-import opentelemetry from '@opentelemetry/api';
+import { context, trace } from '@opentelemetry/api';
 import Database from 'better-sqlite3';
 import fetch from 'node-fetch';
 
-const tracer = opentelemetry.trace.getTracer('default');
-
+const tracer = trace.getTracer('example');
 const span = tracer.startSpan('Root Span');
-tracer.withSpan(span, () => {
+context.with(trace.setSpan(context.active(), span), () => {
     const db = new Database(':memory:');
     db.exec(
         'CREATE TABLE cat_breeds (id CHAR(4) NOT NULL PRIMARY KEY, name VARCHAR(255), wikipedia_url VARCHAR(255) NULL)',
