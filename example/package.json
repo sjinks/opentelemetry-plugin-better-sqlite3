@@ -12,7 +12,7 @@
   "dependencies": {
     "@opentelemetry/api": "^0.11.0",
     "@opentelemetry/context-async-hooks": "^0.11.0",
-    "@opentelemetry/core": "^0.11.0",
+    "@opentelemetry/core": "^1.0.0",
     "@opentelemetry/exporter-zipkin": "^0.11.0",
     "@opentelemetry/node": "^0.11.0",
     "@opentelemetry/plugin-https": "^0.11.0",
