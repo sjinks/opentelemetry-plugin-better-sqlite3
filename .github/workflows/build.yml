@@ -1,17 +1,35 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Build CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+
+permissions:
+  contents: read
 
 jobs:
   build:
+    name: Build (Node ${{ matrix.node.name }})
+    strategy:
+      fail-fast: false
+      matrix:
+        node:
+          - version: lts/*
+            name: LTS
+          - version: lts/-1
+            name: Previous LTS
+          - version: current
+            name: Current
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
-      - uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd # tag=v3.3.0
+      - name: Check out source
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # tag=v3.0.2
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd # tag=v3.3.0
         with:
-          node-version: 12
-      - run: npm cit
+          node-version: ${{ matrix.node.version }}
+          cache: npm
+
+      - name: Install dependencies and run tests
+        run: npm cit
