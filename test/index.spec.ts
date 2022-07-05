@@ -2,7 +2,12 @@ import { expect } from 'chai';
 import forEach from 'mocha-each';
 import { SpanStatusCode, context, trace } from '@opentelemetry/api';
 import { AsyncHooksContextManager } from '@opentelemetry/context-async-hooks';
-import { BasicTracerProvider, InMemorySpanExporter, ReadableSpan, SimpleSpanProcessor } from '@opentelemetry/tracing';
+import {
+    BasicTracerProvider,
+    InMemorySpanExporter,
+    ReadableSpan,
+    SimpleSpanProcessor,
+} from '@opentelemetry/sdk-trace-base';
 import { SemanticAttributes } from '@opentelemetry/semantic-conventions';
 import { BetterSqlite3Instrumentation } from '../lib';
 
