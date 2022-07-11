@@ -7,6 +7,8 @@ on:
 
 jobs:
   publish:
+    permissions:
+      contents: read
     name: Publish package to NPM
     runs-on: ubuntu-latest
     steps:
