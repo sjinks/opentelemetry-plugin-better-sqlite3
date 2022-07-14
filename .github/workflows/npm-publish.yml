@@ -3,12 +3,13 @@ name: Publish Package
 on:
   push:
     tags:
-      - '*'
+      - '**'
+
+permissions:
+  contents: read
 
 jobs:
   publish:
-    permissions:
-      contents: read
     name: Publish package to NPM
     runs-on: ubuntu-latest
     steps:
