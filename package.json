@@ -1,6 +1,6 @@
 {
   "name": "opentelemetry-plugin-better-sqlite3",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "OpenTelemetry better-sqlite3 automatic instrumentation package",
   "scripts": {
     "build": "tsc",
