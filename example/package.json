@@ -20,7 +20,7 @@
     "@opentelemetry/sdk-trace-node": "^1.0.1",
     "better-sqlite3": "^8.0.0",
     "node-fetch": "^2.6.7",
-    "opentelemetry-plugin-better-sqlite3": "^0.9.1"
+    "opentelemetry-plugin-better-sqlite3": "file:.."
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.4.2",
