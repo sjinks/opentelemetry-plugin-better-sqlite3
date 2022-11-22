@@ -10,7 +10,7 @@ import {
 import { SemanticAttributes } from '@opentelemetry/semantic-conventions';
 import type bs3Types from 'better-sqlite3';
 
-const supportedVersions = ['^7.0.0'];
+const supportedVersions = ['^7.0.0', '^8.0.0'];
 
 export class BetterSqlite3Instrumentation extends InstrumentationBase<typeof bs3Types> {
     public static readonly COMPONENT = 'better-sqlite3';
