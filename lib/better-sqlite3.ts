@@ -37,7 +37,7 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase<typeof bs3
                         this._wrap(
                             proto,
                             'prepare',
-                            this.patchPrepare as (original: typeof proto['prepare']) => typeof proto['prepare'],
+                            this.patchPrepare as (original: (typeof proto)['prepare']) => (typeof proto)['prepare'],
                         );
 
                         this._wrap(proto, 'pragma', this.patchPragma);
