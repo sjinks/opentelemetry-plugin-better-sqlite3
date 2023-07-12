@@ -42,7 +42,7 @@
     "mocha-each": "^2.0.1",
     "mocha-reporter-gha": "^1.0.1",
     "nyc": "^15.1.0",
-    "prettier": "^2.2.1",
+    "prettier": "^3.0.0",
     "ts-node": "^10.1.0",
     "typescript": "^5.0.0"
   },
