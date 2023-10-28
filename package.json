@@ -76,5 +76,8 @@
   "bugs": {
     "url": "https://github.com/sjinks/opentelemetry-plugin-better-sqlite3/issues"
   },
-  "homepage": "https://github.com/sjinks/opentelemetry-plugin-better-sqlite3#readme"
+  "homepage": "https://github.com/sjinks/opentelemetry-plugin-better-sqlite3#readme",
+  "publishConfig": {
+    "provenance": true
+  }
 }
