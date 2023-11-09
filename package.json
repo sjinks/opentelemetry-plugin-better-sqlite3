@@ -9,7 +9,7 @@
     "pretest": "npm run lint",
     "test": "mocha",
     "posttest": "npm run build",
-    "prepare": "npm run build",
+    "prepack": "npm run build",
     "pretest:coverage": "npm run lint",
     "test:coverage": "nyc --reporter=text --reporter=lcovonly -- mocha"
   },
