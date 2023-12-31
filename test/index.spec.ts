@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { equal, fail } from 'node:assert/strict';
 import forEach from 'mocha-each';
 import { SpanStatusCode, context, trace } from '@opentelemetry/api';
 import { AsyncHooksContextManager } from '@opentelemetry/context-async-hooks';
@@ -25,12 +25,12 @@ function checkSpanAttributes(
     stmt: string,
     err?: Error,
 ): void {
-    expect(spans.name).to.equal(name);
-    expect(spans.status.code).to.equal(code);
-    expect(spans.attributes[SemanticAttributes.DB_SYSTEM]).to.equal('sqlite3');
-    expect(spans.attributes[SemanticAttributes.DB_NAME]).to.equal(':memory:');
-    expect(spans.attributes[SemanticAttributes.DB_STATEMENT]).to.equal(stmt);
-    expect(spans.status.message).to.equal(err?.message);
+    equal(spans.name, name);
+    equal(spans.status.code, code);
+    equal(spans.attributes[SemanticAttributes.DB_SYSTEM], 'sqlite3');
+    equal(spans.attributes[SemanticAttributes.DB_NAME], ':memory:');
+    equal(spans.attributes[SemanticAttributes.DB_STATEMENT], stmt);
+    equal(spans.status.message, err?.message);
 }
 
 describe('BetterSqlite3Plugin', () => {
@@ -59,11 +59,11 @@ describe('BetterSqlite3Plugin', () => {
 
     describe('Instrumentation', () => {
         it('should export the instrumentation', () => {
-            expect(instrumentation).to.be.instanceOf(BetterSqlite3Instrumentation);
+            equal(instrumentation instanceof BetterSqlite3Instrumentation, true);
         });
 
         it('should have correct instrumentationName', () => {
-            expect(instrumentation.instrumentationName).to.equal('opentelemetry-instrumentation-better-sqlite3');
+            equal(instrumentation.instrumentationName, 'opentelemetry-instrumentation-better-sqlite3');
         });
 
         it('should handle duplicate calls to enable() gracefully', () => {
@@ -72,7 +72,8 @@ describe('BetterSqlite3Plugin', () => {
             context.with(trace.setSpan(context.active(), span), () => {
                 connection.exec('SELECT 1');
                 const spans = memoryExporter.getFinishedSpans();
-                expect(spans).to.be.an('array').and.have.length(1);
+                equal(Array.isArray(spans), true);
+                equal(spans.length, 1);
             });
         });
     });
@@ -85,7 +86,8 @@ describe('BetterSqlite3Plugin', () => {
                 connection.exec(sql);
 
                 const spans = memoryExporter.getFinishedSpans();
-                expect(spans).to.be.an('array').and.have.length(1);
+                equal(Array.isArray(spans), true);
+                equal(spans.length, 1);
                 checkSpanAttributes(spans[0], 'SELECT', SpanStatusCode.OK, sql);
             });
         });
@@ -96,10 +98,11 @@ describe('BetterSqlite3Plugin', () => {
                 const sql = 'SLCT 2+2';
                 try {
                     connection.exec(sql);
-                    expect.fail();
+                    fail();
                 } catch (e) {
                     const spans = memoryExporter.getFinishedSpans();
-                    expect(spans).to.be.an('array').and.have.length(1);
+                    equal(Array.isArray(spans), true);
+                    equal(spans.length, 1);
                     checkSpanAttributes(spans[0], 'SLCT', SpanStatusCode.ERROR, sql, e as Error);
                 }
             });
@@ -111,10 +114,11 @@ describe('BetterSqlite3Plugin', () => {
                 const sql = 'UNKNOWN ?';
                 try {
                     connection.prepare(sql);
-                    expect.fail();
+                    fail();
                 } catch (e) {
                     const spans = memoryExporter.getFinishedSpans();
-                    expect(spans).to.be.an('array').and.have.length(1);
+                    equal(Array.isArray(spans), true);
+                    equal(spans.length, 1);
                     checkSpanAttributes(spans[0], 'prepare: UNKNOWN', SpanStatusCode.ERROR, sql, e as Error);
                 }
             });
@@ -126,7 +130,8 @@ describe('BetterSqlite3Plugin', () => {
                 const sql = 'PRAGMA journal_mode';
                 connection.pragma('journal_mode');
                 const spans = memoryExporter.getFinishedSpans();
-                expect(spans).to.be.an('array').and.have.length.greaterThan(0);
+                equal(Array.isArray(spans), true);
+                equal(spans.length > 0, true);
                 checkSpanAttributes(spans[spans.length - 1], 'PRAGMA', SpanStatusCode.OK, sql);
             });
         });
@@ -141,7 +146,8 @@ describe('BetterSqlite3Plugin', () => {
                 stmt[method]();
 
                 const spans = memoryExporter.getFinishedSpans();
-                expect(spans).to.be.an('array').and.have.length(2);
+                equal(Array.isArray(spans), true);
+                equal(spans.length, 2);
                 checkSpanAttributes(spans[0], 'prepare: SELECT', SpanStatusCode.OK, sql);
                 checkSpanAttributes(spans[1], `${method}: SELECT`, SpanStatusCode.OK, sql);
             });
@@ -155,7 +161,8 @@ describe('BetterSqlite3Plugin', () => {
                 stmt.run();
 
                 const spans = memoryExporter.getFinishedSpans();
-                expect(spans).to.be.an('array').and.have.length(2);
+                equal(Array.isArray(spans), true);
+                equal(spans.length, 2);
                 checkSpanAttributes(spans[0], 'prepare: ANALYZE', SpanStatusCode.OK, sql);
                 checkSpanAttributes(spans[1], 'run: ANALYZE', SpanStatusCode.OK, sql);
             });
@@ -171,7 +178,8 @@ describe('BetterSqlite3Plugin', () => {
                 stmt.run();
 
                 const spans = memoryExporter.getFinishedSpans();
-                expect(spans).to.be.an('array').and.have.length(1);
+                equal(Array.isArray(spans), true);
+                equal(spans.length, 1);
                 checkSpanAttributes(spans[0], 'prepare: ANALYZE', SpanStatusCode.OK, sql);
             });
         });
