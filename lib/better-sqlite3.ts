@@ -1,4 +1,3 @@
-/* eslint-disable no-invalid-this */
 import { Span, SpanKind, SpanStatusCode, context, diag, trace } from '@opentelemetry/api';
 import {
     InstrumentationBase,
@@ -45,6 +44,7 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase<typeof bs3
                     return moduleExports;
                 },
                 (moduleExports, moduleVersion) => {
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     if (moduleExports !== undefined) {
                         diag.debug(`Removing patch for better-sqlite3@${moduleVersion}`);
                         this._massUnwrap([moduleExports.prototype], ['exec', 'prepare', 'pragma']);

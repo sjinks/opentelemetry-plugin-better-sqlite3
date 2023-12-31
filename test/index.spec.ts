@@ -33,16 +33,20 @@ function checkSpanAttributes(
     equal(spans.status.message, err?.message);
 }
 
-describe('BetterSqlite3Plugin', () => {
+describe('BetterSqlite3Plugin', function () {
     let contextManager: AsyncHooksContextManager;
-    const provider = new BasicTracerProvider();
-    instrumentation.setTracerProvider(provider);
-    const memoryExporter = new InMemorySpanExporter();
-    provider.addSpanProcessor(new SimpleSpanProcessor(memoryExporter));
-
+    let provider: BasicTracerProvider;
+    let memoryExporter: InMemorySpanExporter;
     let connection: bs3.Database;
 
-    beforeEach(() => {
+    before(function () {
+        provider = new BasicTracerProvider();
+        instrumentation.setTracerProvider(provider);
+        memoryExporter = new InMemorySpanExporter();
+        provider.addSpanProcessor(new SimpleSpanProcessor(memoryExporter));
+    });
+
+    beforeEach(function () {
         contextManager = new AsyncHooksContextManager().enable();
         context.setGlobalContextManager(contextManager);
         instrumentation.enable();
@@ -50,23 +54,23 @@ describe('BetterSqlite3Plugin', () => {
         connection = new bs3(':memory:');
     });
 
-    afterEach(() => {
+    afterEach(function () {
         context.disable();
         memoryExporter.reset();
         instrumentation.disable();
         connection.close();
     });
 
-    describe('Instrumentation', () => {
-        it('should export the instrumentation', () => {
+    describe('Instrumentation', function () {
+        it('should export the instrumentation', function () {
             equal(instrumentation instanceof BetterSqlite3Instrumentation, true);
         });
 
-        it('should have correct instrumentationName', () => {
+        it('should have correct instrumentationName', function () {
             equal(instrumentation.instrumentationName, 'opentelemetry-instrumentation-better-sqlite3');
         });
 
-        it('should handle duplicate calls to enable() gracefully', () => {
+        it('should handle duplicate calls to enable() gracefully', function () {
             instrumentation.enable();
             const span = provider.getTracer('default').startSpan('test span');
             context.with(trace.setSpan(context.active(), span), () => {
@@ -78,8 +82,8 @@ describe('BetterSqlite3Plugin', () => {
         });
     });
 
-    describe('Database', () => {
-        it('should patch Database#exec ', () => {
+    describe('Database', function () {
+        it('should patch Database#exec ', function () {
             const span = provider.getTracer('default').startSpan('test span');
             context.with(trace.setSpan(context.active(), span), () => {
                 const sql = 'SELECT 2+2';
@@ -92,7 +96,7 @@ describe('BetterSqlite3Plugin', () => {
             });
         });
 
-        it('should handle errors in Database#exec', () => {
+        it('should handle errors in Database#exec', function () {
             const span = provider.getTracer('default').startSpan('test span');
             context.with(trace.setSpan(context.active(), span), () => {
                 const sql = 'SLCT 2+2';
@@ -108,7 +112,7 @@ describe('BetterSqlite3Plugin', () => {
             });
         });
 
-        it('should handle errors in Database#prepare', () => {
+        it('should handle errors in Database#prepare', function () {
             const span = provider.getTracer('default').startSpan('test span');
             context.with(trace.setSpan(context.active(), span), () => {
                 const sql = 'UNKNOWN ?';
@@ -124,7 +128,7 @@ describe('BetterSqlite3Plugin', () => {
             });
         });
 
-        it('should handle Database#pragma', () => {
+        it('should handle Database#pragma', function () {
             const span = provider.getTracer('default').startSpan('test span');
             context.with(trace.setSpan(context.active(), span), () => {
                 const sql = 'PRAGMA journal_mode';
@@ -137,7 +141,8 @@ describe('BetterSqlite3Plugin', () => {
         });
     });
 
-    describe('Statement', () => {
+    describe('Statement', function () {
+        // eslint-disable-next-line mocha/no-setup-in-describe
         forEach([['all'], ['get']]).it('should patch Statement#%s', (method: 'all' | 'get') => {
             const span = provider.getTracer('default').startSpan('test span');
             context.with(trace.setSpan(context.active(), span), () => {
@@ -153,7 +158,7 @@ describe('BetterSqlite3Plugin', () => {
             });
         });
 
-        it('should patch Statement#run', () => {
+        it('should patch Statement#run', function () {
             const span = provider.getTracer('default').startSpan('test span');
             context.with(trace.setSpan(context.active(), span), () => {
                 const sql = 'ANALYZE';
@@ -168,7 +173,7 @@ describe('BetterSqlite3Plugin', () => {
             });
         });
 
-        it('should not create spans in Statement when the plugin gets disabled', () => {
+        it('should not create spans in Statement when the plugin gets disabled', function () {
             const span = provider.getTracer('default').startSpan('test span');
             context.with(trace.setSpan(context.active(), span), () => {
                 const sql = 'ANALYZE';
