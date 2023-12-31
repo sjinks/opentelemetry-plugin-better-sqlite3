@@ -19,7 +19,6 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase<typeof bs3
         super('opentelemetry-instrumentation-better-sqlite3', '1.0.0', config);
     }
 
-    // eslint-disable-next-line class-methods-use-this
     protected init(): InstrumentationModuleDefinition<typeof bs3Types>[] {
         return [
             new InstrumentationNodeModuleDefinition<typeof bs3Types>(
