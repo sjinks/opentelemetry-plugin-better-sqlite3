@@ -11,19 +11,19 @@ import type bs3Types from 'better-sqlite3';
 
 const supportedVersions = ['^7.0.0', '^8.0.0', '^9.0.0', '^10.0.0'];
 
-export class BetterSqlite3Instrumentation extends InstrumentationBase<typeof bs3Types> {
+export class BetterSqlite3Instrumentation extends InstrumentationBase {
     public static readonly COMPONENT = 'better-sqlite3';
 
     public constructor(config?: InstrumentationConfig) {
         super('opentelemetry-instrumentation-better-sqlite3', '1.0.0', config);
     }
 
-    protected init(): InstrumentationModuleDefinition<typeof bs3Types>[] {
+    protected init(): InstrumentationModuleDefinition[] {
         return [
-            new InstrumentationNodeModuleDefinition<typeof bs3Types>(
+            new InstrumentationNodeModuleDefinition(
                 'better-sqlite3',
                 supportedVersions,
-                (moduleExports, moduleVersion) => {
+                (moduleExports: typeof bs3Types, moduleVersion) => {
                     diag.debug(`Applying patch for better-sqlite3@${moduleVersion}`);
 
                     const proto = moduleExports.prototype;
@@ -43,7 +43,7 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase<typeof bs3
 
                     return moduleExports;
                 },
-                (moduleExports, moduleVersion) => {
+                (moduleExports: typeof bs3Types, moduleVersion) => {
                     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                     if (moduleExports !== undefined) {
                         diag.debug(`Removing patch for better-sqlite3@${moduleVersion}`);
