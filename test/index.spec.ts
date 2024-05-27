@@ -8,7 +8,7 @@ import {
     ReadableSpan,
     SimpleSpanProcessor,
 } from '@opentelemetry/sdk-trace-base';
-import { SemanticAttributes } from '@opentelemetry/semantic-conventions';
+import { SEMATTRS_DB_NAME, SEMATTRS_DB_STATEMENT, SEMATTRS_DB_SYSTEM } from '@opentelemetry/semantic-conventions';
 import { BetterSqlite3Instrumentation } from '../lib';
 
 // The instrumentation must be loaded before the module it is going to instrument
@@ -27,9 +27,9 @@ function checkSpanAttributes(
 ): void {
     equal(spans.name, name);
     equal(spans.status.code, code);
-    equal(spans.attributes[SemanticAttributes.DB_SYSTEM], 'sqlite3');
-    equal(spans.attributes[SemanticAttributes.DB_NAME], ':memory:');
-    equal(spans.attributes[SemanticAttributes.DB_STATEMENT], stmt);
+    equal(spans.attributes[SEMATTRS_DB_SYSTEM], 'sqlite3');
+    equal(spans.attributes[SEMATTRS_DB_NAME], ':memory:');
+    equal(spans.attributes[SEMATTRS_DB_STATEMENT], stmt);
     equal(spans.status.message, err?.message);
 }
 
