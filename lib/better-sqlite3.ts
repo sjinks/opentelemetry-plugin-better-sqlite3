@@ -15,7 +15,7 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase {
     public static readonly COMPONENT = 'better-sqlite3';
 
     public constructor(config?: InstrumentationConfig) {
-        super('opentelemetry-instrumentation-better-sqlite3', '1.0.0', config);
+        super('opentelemetry-instrumentation-better-sqlite3', '1.0.0', config ?? {});
     }
 
     protected init(): InstrumentationModuleDefinition[] {
