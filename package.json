@@ -25,7 +25,7 @@
     "@opentelemetry/sdk-trace-base": "^1.17.1",
     "@types/better-sqlite3": "^7.6.6",
     "@types/node": "^20.8.9",
-    "better-sqlite3": "^10.0.0",
+    "better-sqlite3": "^11.0.0",
     "c8": "^9.1.0",
     "eslint-formatter-gha": "^1.4.3",
     "node-reporter-gha": "^2.0.1",
@@ -39,7 +39,7 @@
     "@opentelemetry/semantic-conventions": "^1.22.0"
   },
   "peerDependencies": {
-    "better-sqlite3": "^7.1.1 || ^8.0.0 || ^9.0.0 || ^10.0.0"
+    "better-sqlite3": "^7.1.1 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0"
   },
   "main": "dist/lib/index.js",
   "keywords": [
