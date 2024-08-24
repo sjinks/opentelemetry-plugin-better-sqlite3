@@ -44,7 +44,7 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase {
                     return moduleExports;
                 },
                 (moduleExports: typeof bs3Types, moduleVersion) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, sonarjs/different-types-comparison
                     if (moduleExports !== undefined) {
                         diag.debug(`Removing patch for better-sqlite3@${moduleVersion}`);
                         this._massUnwrap([moduleExports.prototype], ['exec', 'prepare', 'pragma']);
@@ -67,10 +67,10 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase {
         });
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private static defaultRunner<F extends (...args: any[]) => unknown>(
+    private static defaultRunner(
         span: Span,
-        original: F,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        original: (...args: any[]) => unknown,
         this_: unknown,
         params: unknown[],
     ): unknown {
