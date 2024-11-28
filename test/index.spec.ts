@@ -40,10 +40,11 @@ void describe('BetterSqlite3Plugin', function () {
     let connection: bs3.Database;
 
     before(function () {
-        provider = new BasicTracerProvider();
-        instrumentation.setTracerProvider(provider);
         memoryExporter = new InMemorySpanExporter();
-        provider.addSpanProcessor(new SimpleSpanProcessor(memoryExporter));
+        provider = new BasicTracerProvider({
+            spanProcessors: [new SimpleSpanProcessor(memoryExporter)],
+        });
+        instrumentation.setTracerProvider(provider);
     });
 
     beforeEach(function () {
