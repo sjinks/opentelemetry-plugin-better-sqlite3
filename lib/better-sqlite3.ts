@@ -23,10 +23,13 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase {
             new InstrumentationNodeModuleDefinition(
                 'better-sqlite3',
                 supportedVersions,
-                (moduleExports: typeof bs3Types, moduleVersion) => {
+                (moduleExports: typeof bs3Types | { default: typeof bs3Types }, moduleVersion) => {
                     diag.debug(`Applying patch for better-sqlite3@${moduleVersion}`);
 
-                    const proto = moduleExports.prototype;
+                    const proto =
+                        'prototype' in moduleExports
+                            ? moduleExports.prototype
+                            : (moduleExports as { default: typeof bs3Types }).default.prototype;
 
                     // istanbul ignore else
                     // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -43,11 +46,15 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase {
 
                     return moduleExports;
                 },
-                (moduleExports: typeof bs3Types, moduleVersion) => {
+                (moduleExports: typeof bs3Types | { default: typeof bs3Types }, moduleVersion) => {
                     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, sonarjs/different-types-comparison
                     if (moduleExports !== undefined) {
                         diag.debug(`Removing patch for better-sqlite3@${moduleVersion}`);
-                        this._massUnwrap([moduleExports.prototype], ['exec', 'prepare', 'pragma']);
+                        const proto =
+                            'prototype' in moduleExports
+                                ? moduleExports.prototype
+                                : (moduleExports as { default: typeof bs3Types }).default.prototype;
+                        this._massUnwrap([proto], ['exec', 'prepare', 'pragma']);
                     }
                 },
             ),
