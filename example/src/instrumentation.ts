@@ -5,14 +5,16 @@ import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { BetterSqlite3Instrumentation } from 'opentelemetry-plugin-better-sqlite3';
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
 
-const provider = new NodeTracerProvider();
 const zipkinExporter = new ZipkinExporter({
     url: 'http://127.0.0.1:9411/api/v2/spans',
     serviceName: 'example',
 });
 
 const zipkinProcessor = new SimpleSpanProcessor(zipkinExporter);
-provider.addSpanProcessor(zipkinProcessor);
+
+const provider = new NodeTracerProvider({
+    spanProcessors: [zipkinProcessor],
+});
 
 provider.register();
 registerInstrumentations({

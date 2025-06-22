@@ -6,7 +6,7 @@ import {
     InstrumentationNodeModuleDefinition,
     isWrapped,
 } from '@opentelemetry/instrumentation';
-import { ATTR_DB_NAMESPACE, ATTR_DB_QUERY_TEXT, ATTR_DB_SYSTEM } from '@opentelemetry/semantic-conventions/incubating';
+import { ATTR_DB_NAMESPACE, ATTR_DB_QUERY_TEXT, ATTR_DB_SYSTEM_NAME } from '@opentelemetry/semantic-conventions';
 import type bs3Types from 'better-sqlite3';
 
 const supportedVersions = ['^7.0.0', '^8.0.0', '^9.0.0', '^10.0.0', '^11.0.0', '^12.0.0'];
@@ -67,7 +67,7 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase {
         return this.tracer.startSpan(spanName, {
             kind: SpanKind.CLIENT,
             attributes: {
-                [ATTR_DB_SYSTEM]: 'sqlite3',
+                [ATTR_DB_SYSTEM_NAME]: 'sqlite3',
                 [ATTR_DB_QUERY_TEXT]: query,
                 [ATTR_DB_NAMESPACE]: db.name,
             },
