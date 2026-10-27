@@ -1,13 +1,8 @@
 import { equal, fail } from 'node:assert/strict';
 import { afterEach, before, beforeEach, describe, it } from 'node:test';
 import { SpanStatusCode, context, trace } from '@opentelemetry/api';
-import { AsyncHooksContextManager } from '@opentelemetry/context-async-hooks';
-import {
-    BasicTracerProvider,
-    InMemorySpanExporter,
-    type ReadableSpan,
-    SimpleSpanProcessor,
-} from '@opentelemetry/sdk-trace-base';
+import { AsyncLocalStorageContextManager } from '@opentelemetry/context-async-hooks';
+import { InMemorySpanExporter, type ReadableSpan, SimpleSpanProcessor, TracerProvider } from '@opentelemetry/sdk-trace';
 import { ATTR_DB_NAMESPACE, ATTR_DB_QUERY_TEXT, ATTR_DB_SYSTEM_NAME } from '@opentelemetry/semantic-conventions';
 import { BetterSqlite3Instrumentation } from '../lib';
 
@@ -34,21 +29,21 @@ function checkSpanAttributes(
 }
 
 void describe('BetterSqlite3Plugin', function () {
-    let contextManager: AsyncHooksContextManager;
-    let provider: BasicTracerProvider;
+    let contextManager: AsyncLocalStorageContextManager;
+    let provider: TracerProvider;
     let memoryExporter: InMemorySpanExporter;
     let connection: bs3.Database;
 
     before(function () {
         memoryExporter = new InMemorySpanExporter();
-        provider = new BasicTracerProvider({
-            spanProcessors: [new SimpleSpanProcessor(memoryExporter)],
+        provider = new TracerProvider({
+            spanProcessors: [new SimpleSpanProcessor({ exporter: memoryExporter })],
         });
         instrumentation.setTracerProvider(provider);
     });
 
     beforeEach(function () {
-        contextManager = new AsyncHooksContextManager().enable();
+        contextManager = new AsyncLocalStorageContextManager().enable();
         context.setGlobalContextManager(contextManager);
         instrumentation.enable();
 
