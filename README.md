@@ -2,6 +2,14 @@
 
 OpenTelemetry better-sqlite3 automatic instrumentation package
 
+## Installation
+
+```sh
+npm i opentelemetry-plugin-better-sqlite3 @opentelemetry/api
+```
+
+`@opentelemetry/api` is a peer dependency: the plugin uses the copy installed by your application.
+
 ## Usage
 
 ```typescript
