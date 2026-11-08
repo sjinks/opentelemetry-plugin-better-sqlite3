@@ -19,6 +19,10 @@
     "dist/lib/*.d.ts"
   ],
   "typings": "dist/lib/index.d.ts",
+  "allowScripts": {
+    "better-sqlite3": true,
+    "unrs-resolver": true
+  },
   "devDependencies": {
     "@myrotvorets/eslint-config-myrotvorets-ts": "^3.0.2",
     "@opentelemetry/context-async-hooks": "^1.17.1 || ^2.0.1",
