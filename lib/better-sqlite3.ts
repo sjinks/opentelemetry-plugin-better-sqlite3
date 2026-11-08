@@ -27,9 +27,7 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase {
                     diag.debug(`Applying patch for better-sqlite3@${moduleVersion}`);
 
                     const proto =
-                        'prototype' in moduleExports
-                            ? moduleExports.prototype
-                            : (moduleExports as { default: typeof bs3Types }).default.prototype;
+                        'prototype' in moduleExports ? moduleExports.prototype : moduleExports.default.prototype;
 
                     // istanbul ignore else
                     // eslint-disable-next-line @typescript-eslint/unbound-method
@@ -51,9 +49,7 @@ export class BetterSqlite3Instrumentation extends InstrumentationBase {
                     if (moduleExports !== undefined) {
                         diag.debug(`Removing patch for better-sqlite3@${moduleVersion}`);
                         const proto =
-                            'prototype' in moduleExports
-                                ? moduleExports.prototype
-                                : (moduleExports as { default: typeof bs3Types }).default.prototype;
+                            'prototype' in moduleExports ? moduleExports.prototype : moduleExports.default.prototype;
                         this._massUnwrap([proto], ['exec', 'prepare', 'pragma']);
                     }
                 },

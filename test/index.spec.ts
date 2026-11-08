@@ -15,7 +15,7 @@ import { BetterSqlite3Instrumentation } from '../lib';
 const instrumentation = new BetterSqlite3Instrumentation();
 instrumentation.disable();
 
-// eslint-disable-next-line import/order
+// eslint-disable-next-line import-x/order
 import bs3 from 'better-sqlite3';
 
 function checkSpanAttributes(
