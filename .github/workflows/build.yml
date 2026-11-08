@@ -18,8 +18,9 @@ jobs:
             name: LTS
           - version: lts/-1
             name: Previous LTS
-          - version: current
-            name: Current
+          # The locked better-sqlite3 version supports Node 25, but not Node 27 alpha.
+          - version: '25'
+            name: '25'
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
