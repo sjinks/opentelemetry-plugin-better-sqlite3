@@ -24,7 +24,7 @@
     "unrs-resolver": true
   },
   "devDependencies": {
-    "@myrotvorets/eslint-config-myrotvorets-ts": "^3.0.2",
+    "@myrotvorets/eslint-config-myrotvorets-ts": "^4.0.0",
     "@opentelemetry/context-async-hooks": "^1.17.1 || ^2.0.1",
     "@opentelemetry/sdk-trace-base": "^1.17.1 || ^2.0.1",
     "@types/better-sqlite3": "^7.6.13",
